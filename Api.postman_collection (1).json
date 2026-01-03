@@ -1,0 +1,408 @@
+{
+	"info": {
+		"_postman_id": "a9e94de1-2d20-4fee-b25c-33b9f30b9cca",
+		"name": "Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22740976"
+	},
+	"item": [
+		{
+			"name": "Şehirleri listeleme",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://tedgxpij12.execute-api.us-east-1.amazonaws.com/default/cities?search=v",
+					"protocol": "https",
+					"host": [
+						"tedgxpij12",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"default",
+						"cities"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "v"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Şehirleri listeleme",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://tedgxpij12.execute-api.us-east-1.amazonaws.com/default/cities?search=viyana",
+							"protocol": "https",
+							"host": [
+								"tedgxpij12",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"default",
+								"cities"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "viyana"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 13 Mar 2025 11:51:02 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Content-Length",
+							"value": "167"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "HXP6BgYioAMEZ6A="
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"name\": \"Viyana\",\n        \"country\": \"Avusturya\",\n        \"latitude\": 48.2082,\n        \"longitude\": 16.3738,\n        \"created_at\": \"2025-03-12T17:35:00.907Z\",\n        \"updated_at\": \"2025-03-12T17:35:00.907Z\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Fotoğrafları Listeleme",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://tedgxpij12.execute-api.us-east-1.amazonaws.com/default/photos?city_id=1&start_date=2025-03-12T21:42:37.779Z&end_date=2025-04-12T21:42:37.779Z",
+					"protocol": "https",
+					"host": [
+						"tedgxpij12",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"default",
+						"photos"
+					],
+					"query": [
+						{
+							"key": "city_id",
+							"value": "1"
+						},
+						{
+							"key": "start_date",
+							"value": "2025-03-12T21:42:37.779Z"
+						},
+						{
+							"key": "end_date",
+							"value": "2025-04-12T21:42:37.779Z"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Fotoğrafları listeleme",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://tedgxpij12.execute-api.us-east-1.amazonaws.com/default/photos?city_id=1&end_date=2025-03-12T21:42:37.779Z&start_date=2025-03-12T21:42:37.779Z",
+							"protocol": "https",
+							"host": [
+								"tedgxpij12",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"default",
+								"photos"
+							],
+							"query": [
+								{
+									"key": "city_id",
+									"value": "1"
+								},
+								{
+									"key": "end_date",
+									"value": "2025-03-12T21:42:37.779Z"
+								},
+								{
+									"key": "start_date",
+									"value": "2025-03-12T21:42:37.779Z"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 13 Mar 2025 11:53:55 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "8949"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "HXQU4gfPIAMEb_g="
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 16,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:42:37.779Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:42:37.779Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 17,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:45:11.650Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:45:11.650Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 18,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:47:35.856Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:47:35.856Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 19,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:51:40.436Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:51:40.436Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 20,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:54:49.744Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:54:49.744Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 27,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.amazonaws.com/photos/1741855424764-test1.jpg\",\n        \"timestamp\": \"2025-03-13T08:43:45.344Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-13T08:43:45.344Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 29,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.amazonaws.com/photos/1741857011852-test1.jpg\",\n        \"timestamp\": \"2025-03-13T09:10:12.043Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-13T09:10:12.043Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 26,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.amazonaws.com/photos/1741849421029-test1.jpg\",\n        \"timestamp\": \"2025-03-13T07:03:41.510Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-13T07:03:41.510Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 1,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T14:38:50.482Z\",\n        \"metadata\": \"nice weather\",\n        \"title\": \"new\",\n        \"created_at\": \"2025-03-12T14:38:50.486Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 2,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T20:36:27.660Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T20:36:27.660Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 3,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T20:46:20.672Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T20:46:20.672Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 4,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T20:56:58.216Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T20:56:58.216Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 5,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:01:33.944Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:01:33.944Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 10,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:21:08.268Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:21:08.268Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 6,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:08:13.979Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:08:13.979Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 7,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:10:06.148Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:10:06.148Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 8,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:13:45.744Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:13:45.744Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 9,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:17:37.181Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:17:37.181Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 14,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:38:21.790Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:38:21.790Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 13,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741855424764-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:35:12.547Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:35:12.547Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 15,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741855424764-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:38:42.118Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:38:42.118Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 11,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:21:47.362Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:21:47.362Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 28,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.amazonaws.com/photos/1741856955894-test1.jpg\",\n        \"timestamp\": \"2025-03-13T09:09:16.457Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-13T09:09:16.457Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 30,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/processed/1741857261793-test1.jpg\",\n        \"timestamp\": \"2025-03-13T09:14:21.980Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-13T09:14:21.980Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 12,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:28:23.416Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:28:23.416Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 21,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T21:58:11.312Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T21:58:11.312Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 22,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T22:01:13.335Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T22:01:13.335Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 23,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T22:03:05.999Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T22:03:05.999Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 24,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T22:04:41.051Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T22:04:41.051Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    },\n    {\n        \"id\": 25,\n        \"webcam_id\": 1,\n        \"city_id\": 1,\n        \"image_url\": \"https://courseproject-bucket.s3.us-east-1.amazonaws.com/photos/1741817280847-test1.jpg\",\n        \"timestamp\": \"2025-03-12T22:08:01.199Z\",\n        \"metadata\": {\n            \"greaful\": \"data\"\n        },\n        \"title\": \"test1\",\n        \"created_at\": \"2025-03-12T22:08:01.199Z\",\n        \"is_processed\": true,\n        \"is_failed\": false\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Videoları Listeleme",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://tedgxpij12.execute-api.us-east-1.amazonaws.com/default/videos?city_id=1",
+					"protocol": "https",
+					"host": [
+						"tedgxpij12",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"default",
+						"videos"
+					],
+					"query": [
+						{
+							"key": "city_id",
+							"value": "1"
+						},
+						{
+							"key": "start_date",
+							"value": "2025-03-12T21:42:37.779Z",
+							"disabled": true
+						},
+						{
+							"key": "end_date",
+							"value": "2025-04-15T21:42:37.779Z",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Videoları Listeleme",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://tedgxpij12.execute-api.us-east-1.amazonaws.com/default/videos?city_id=1",
+							"protocol": "https",
+							"host": [
+								"tedgxpij12",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"default",
+								"videos"
+							],
+							"query": [
+								{
+									"key": "city_id",
+									"value": "1"
+								},
+								{
+									"key": "start_date",
+									"value": "2025-03-12T21:42:37.779Z",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "2025-04-15T21:42:37.779Z",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 13 Mar 2025 12:00:32 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "2137"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "HXRS3hx8IAMEZwA="
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"city_id\": 1,\n        \"time_range_start\": \"2025-03-12T14:38:50.486Z\",\n        \"time_range_end\": \"2025-03-12T21:01:33.944Z\",\n        \"video_url\": \"https://courseproject-bucket.s3.amazonaws.com/videos/video_1_0bdf1ad8-8e49-468f-bc7a-ddcdbe0f13b8.mp4\",\n        \"created_at\": \"2025-03-13T09:25:03.003Z\"\n    },\n    {\n        \"id\": 2,\n        \"city_id\": 1,\n        \"time_range_start\": \"2025-03-12T21:08:13.979Z\",\n        \"time_range_end\": \"2025-03-12T21:21:08.268Z\",\n        \"video_url\": \"https://courseproject-bucket.s3.amazonaws.com/videos/video_1_1e319b42-6908-4f6f-97d9-b4ea99e40ded.mp4\",\n        \"created_at\": \"2025-03-13T09:26:56.443Z\"\n    },\n    {\n        \"id\": 3,\n        \"city_id\": 1,\n        \"time_range_start\": \"2025-03-12T14:38:50.486Z\",\n        \"time_range_end\": \"2025-03-12T21:01:33.944Z\",\n        \"video_url\": \"https://courseproject-bucket.s3.amazonaws.com/videos/video_1_fb0c2e54-bc27-4fda-b750-033f8762f59a.mp4\",\n        \"created_at\": \"2025-03-13T09:38:50.783Z\"\n    },\n    {\n        \"id\": 4,\n        \"city_id\": 1,\n        \"time_range_start\": \"2025-03-12T21:08:13.979Z\",\n        \"time_range_end\": \"2025-03-12T21:21:08.268Z\",\n        \"video_url\": \"https://courseproject-bucket.s3.amazonaws.com/videos/video_1_cb56679f-6e16-451a-a86d-04d407535c42.mp4\",\n        \"created_at\": \"2025-03-13T09:43:48.938Z\"\n    },\n    {\n        \"id\": 5,\n        \"city_id\": 1,\n        \"time_range_start\": \"2025-03-12T21:21:47.362Z\",\n        \"time_range_end\": \"2025-03-12T21:38:42.118Z\",\n        \"video_url\": \"https://courseproject-bucket.s3.amazonaws.com/videos/video_1_64f7acdf-e02f-433c-96ee-4802b4a2de6b.mp4\",\n        \"created_at\": \"2025-03-13T09:48:49.042Z\"\n    },\n    {\n        \"id\": 6,\n        \"city_id\": 1,\n        \"time_range_start\": \"2025-03-12T21:42:37.779Z\",\n        \"time_range_end\": \"2025-03-12T21:54:49.744Z\",\n        \"video_url\": \"https://courseproject-bucket.s3.amazonaws.com/videos/video_1_8d036696-4905-46b5-9581-86097c897e77.mp4\",\n        \"created_at\": \"2025-03-13T09:51:13.853Z\"\n    },\n    {\n        \"id\": 7,\n        \"city_id\": 1,\n        \"time_range_start\": \"2025-03-12T21:58:11.312Z\",\n        \"time_range_end\": \"2025-03-12T22:08:01.199Z\",\n        \"video_url\": \"https://courseproject-bucket.s3.amazonaws.com/videos/video_1_9cafe949-9ade-4c03-844f-ad4755f31946.mp4\",\n        \"created_at\": \"2025-03-13T10:51:16.472Z\"\n    },\n    {\n        \"id\": 8,\n        \"city_id\": 1,\n        \"time_range_start\": \"2025-03-13T07:03:41.510Z\",\n        \"time_range_end\": \"2025-03-13T09:14:21.980Z\",\n        \"video_url\": \"https://courseproject-bucket.s3.amazonaws.com/videos/video_1_40070d10-8d61-4429-9e89-6c566a574f5e.mp4\",\n        \"created_at\": \"2025-03-13T11:51:17.365Z\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Hava Durumu Verilerini Listeleme",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://tedgxpij12.execute-api.us-east-1.amazonaws.com/default/weather?city_id=1",
+					"protocol": "https",
+					"host": [
+						"tedgxpij12",
+						"execute-api",
+						"us-east-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"default",
+						"weather"
+					],
+					"query": [
+						{
+							"key": "start_date",
+							"value": "2025-03-12T21:42:37.779Z",
+							"disabled": true
+						},
+						{
+							"key": "end_date",
+							"value": "2025-04-15T21:42:37.779Z",
+							"disabled": true
+						},
+						{
+							"key": "city_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Hava durumu",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://tedgxpij12.execute-api.us-east-1.amazonaws.com/default/weather?city_id=1",
+							"protocol": "https",
+							"host": [
+								"tedgxpij12",
+								"execute-api",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"default",
+								"weather"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2025-03-12T21:42:37.779Z",
+									"disabled": true
+								},
+								{
+									"key": "end_date",
+									"value": "2025-04-15T21:42:37.779Z",
+									"disabled": true
+								},
+								{
+									"key": "city_id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 13 Mar 2025 12:08:37 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "148"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "HXSexgikIAMEY8A="
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"city_id\": 1,\n        \"temperature\": 25,\n        \"humidity\": 60,\n        \"pressure\": 1013,\n        \"timestamp\": \"2025-03-12T20:33:18.316Z\",\n        \"created_at\": \"2025-03-12T20:33:18.316Z\"\n    }\n]"
+				}
+			]
+		}
+	]
+}

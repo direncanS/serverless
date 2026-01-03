@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Weather Archive</title>
+    <!-- Prevent 403 favicon requests when hosted on S3 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☁</text></svg>">
+    <link rel="stylesheet" href="style.css">
+    <!-- Chart.js for plotting weather data -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- ========== HOME VIEW ========== -->
+    <div id="home-view" class="view">
+        <div class="home-container">
+            <div class="logo" onclick="navigateHome()">
+                <span class="logo-icon">&#9729;</span>
+                <h1>The Weather Archive</h1>
+            </div>
+            <p class="tagline">Explore weather data and timelapse videos from cities around the world</p>
+            <p class="nav-link"><a href="#upload">Webcam Upload</a></p>
+
+            <div class="search-box">
+                <div class="search-input-wrapper">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Search for a city..."
+                        autocomplete="off"
+                    >
+                    <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+                </div>
+                <button id="search-btn" onclick="handleSearch()">Search</button>
+            </div>
+            <div id="search-error" class="error-message"></div>
+        </div>
+    </div>
+
+    <!-- ========== TOPIC VIEW ========== -->
+    <div id="topic-view" class="view" style="display: none;">
+        <header class="topic-header">
+            <div class="logo logo-small" onclick="navigateHome()">
+                <span class="logo-icon">&#9729;</span>
+                <span>The Weather Archive</span>
+            </div>
+        </header>
+
+        <div class="topic-container">
+            <h1 id="topic-title">City Name</h1>
+
+            <!-- Video Section -->
+            <section class="video-section">
+                <h2>Timelapse Video <span id="video-cache-status" class="cache-indicator"></span></h2>
+                <div id="video-player-container">
+                    <video id="topic-video" controls>
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p id="video-message" class="info-message"></p>
+                </div>
+            </section>
+
+            <!-- Controls Section -->
+            <section class="controls-section">
+                <div class="control-group">
+                    <label for="date-picker">Select Date:</label>
+                    <select id="date-picker">
+                        <option value="">Loading dates...</option>
+                    </select>
+                </div>
+                <div class="control-group">
+                    <label for="hour-slider">Hour: <span id="hour-display">0</span>:00</label>
+                    <input type="range" id="hour-slider" min="0" max="23" value="0">
+                    <div id="available-hours-info" class="info-text"></div>
+                </div>
+            </section>
+
+            <!-- Plot Section -->
+            <section class="plot-section">
+                <h2>Weather Data (Hourly Averages) <span id="weather-cache-status" class="cache-indicator"></span></h2>
+                <div class="chart-container">
+                    <canvas id="weather-chart"></canvas>
+                </div>
+                <p id="plot-message" class="info-message"></p>
+            </section>
+        </div>
+    </div>
+
+    <!-- ========== UPLOAD VIEW (Webcam API) ========== -->
+    <div id="upload-view" class="view" style="display: none;">
+        <header class="topic-header">
+            <div class="logo logo-small" onclick="navigateHome()">
+                <span class="logo-icon">&#9729;</span>
+                <span>The Weather Archive</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#" onclick="navigateHome()">Home</a>
+                <a href="#upload" class="active">Upload</a>
+            </nav>
+        </header>
+
+        <div class="upload-container">
+            <h1>Webcam Data Upload</h1>
+            <p class="info-text">Upload photos and weather data using your webcam API key.</p>
+
+            <!-- API Key Input (shared) -->
+            <div class="form-group">
+                <label for="upload-api-key">API Key (required)</label>
+                <input type="password" id="upload-api-key" placeholder="Enter your webcam API key">
+            </div>
+
+            <div class="upload-sections">
+                <!-- Photo Upload -->
+                <section class="upload-section">
+                    <h2>Upload Photo</h2>
+                    <form id="photo-upload-form" onsubmit="handlePhotoUpload(event)">
+                        <div class="form-group">
+                            <label for="upload-photo-file">Image File</label>
+                            <input type="file" id="upload-photo-file" accept="image/*">
+                        </div>
+                        <div class="form-group">
+                            <label for="upload-photo-title">Title</label>
+                            <input type="text" id="upload-photo-title" placeholder="Photo title">
+                        </div>
+                        <button type="submit" class="btn-primary">Upload Photo</button>
+                    </form>
+                </section>
+
+                <!-- Weather Upload -->
+                <section class="upload-section">
+                    <h2>Upload Weather Data</h2>
+                    <form id="weather-upload-form" onsubmit="handleWeatherUpload(event)">
+                        <div class="form-group">
+                            <label for="upload-temperature">Temperature (C)</label>
+                            <input type="number" id="upload-temperature" step="0.1" placeholder="e.g. 22.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="upload-humidity">Humidity (%)</label>
+                            <input type="number" id="upload-humidity" step="0.1" placeholder="e.g. 65">
+                        </div>
+                        <div class="form-group">
+                            <label for="upload-pressure">Pressure (hPa)</label>
+                            <input type="number" id="upload-pressure" step="0.1" placeholder="e.g. 1013.25">
+                        </div>
+                        <button type="submit" class="btn-primary">Upload Weather</button>
+                    </form>
+                </section>
+            </div>
+
+            <!-- Status Message -->
+            <div id="upload-status" class="upload-status"></div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
