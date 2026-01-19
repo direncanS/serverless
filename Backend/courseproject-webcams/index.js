@@ -51,7 +51,14 @@ exports.handler = async (event) => {
     }
 
     const client = await pool.connect();
+
+    // DEBUG: API key kontrolü
+    console.log("Checking API key:", apiKey);
+    const apiKeyCheck = await client.query("SELECT * FROM api_keys WHERE api_key = $1", [apiKey]);
+    console.log("api_keys result:", JSON.stringify(apiKeyCheck.rows));
+
     const keyCheck = await client.query("SELECT * FROM webcams WHERE api_key_id = (SELECT id FROM api_keys WHERE api_key = $1)", [apiKey]);
+    console.log("webcams result:", JSON.stringify(keyCheck.rows));
 
     if (keyCheck.rowCount === 0) {
       client.release();
@@ -70,6 +77,19 @@ exports.handler = async (event) => {
     // 2. HAVA DURUMU KAYDETME (POST /weather)
     if ((path.endsWith("/weather") || path === "/weather") && method === "POST") {
       const { temperature, humidity, pressure } = body;
+
+      // Input validation
+      if (temperature === undefined || humidity === undefined || pressure === undefined) {
+        return {
+          statusCode: 400,
+          headers: corsHeaders,
+          body: JSON.stringify({
+            message: "Missing required fields",
+            required: ["temperature", "humidity", "pressure"]
+          })
+        };
+      }
+
       const result = await pool.query(
         "INSERT INTO weather_data (city_id, temperature, humidity, pressure, timestamp) VALUES ($1, $2, $3, $4, NOW()) RETURNING *",
         [webCam.city_id, temperature, humidity, pressure]
@@ -80,6 +100,19 @@ exports.handler = async (event) => {
     // 3. FOTOĞRAF YÜKLEME (POST /photo)
     if ((path.endsWith("/photo") || path === "/photo") && method === "POST") {
       const { image, title, metadata } = body;
+
+      // Input validation
+      if (!image || !title) {
+        return {
+          statusCode: 400,
+          headers: corsHeaders,
+          body: JSON.stringify({
+            message: "Missing required fields",
+            required: ["image", "title"],
+            optional: ["metadata"]
+          })
+        };
+      }
 
       let cleanImage = image;
       if (cleanImage.includes(",")) {

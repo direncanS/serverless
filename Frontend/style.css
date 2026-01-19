@@ -88,6 +88,57 @@ body {
     border-color: rgba(223, 225, 229, 0);
 }
 
+/* Selection States */
+#search-input.selected {
+    border-color: #34a853;
+    background-color: #f0fdf4;
+}
+
+#search-input.selected:focus {
+    box-shadow: 0 0 0 3px rgba(52, 168, 83, 0.2);
+    border-color: #34a853;
+}
+
+#search-input.invalid {
+    border-color: #ea4335;
+    background-color: #fef2f2;
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Selection indicator icon */
+.selection-indicator {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    pointer-events: none;
+}
+
+.selection-indicator.valid {
+    color: #34a853;
+}
+
+.selection-indicator.invalid {
+    color: #ea4335;
+}
+
+/* Dropdown hint text */
+.dropdown-hint {
+    padding: 10px 20px;
+    color: #5f6368;
+    font-size: 13px;
+    font-style: italic;
+    background: #f8f9fa;
+    border-bottom: 1px solid #eee;
+}
+
 #search-btn {
     padding: 14px 24px;
     font-size: 14px;

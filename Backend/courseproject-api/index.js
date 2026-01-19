@@ -1,4 +1,3 @@
-const AWS = require("aws-sdk");
 const { Pool } = require("pg");
 const Redis = require("ioredis");
 
@@ -8,7 +7,6 @@ const pool = new Pool({
 });
 
 const redis = new Redis(process.env.REDIS_URL);
-const s3 = new AWS.S3();
 
 // CORS Headers - Required for browser requests
 const corsHeaders = {
@@ -92,6 +90,18 @@ exports.handler = async (event) => {
     // 📍 Fotoğrafları listeleme (GET /photos)
     if (path.endsWith("/photos") && method === "GET") {
       const { city_id, start_date, end_date } = queryParams;
+
+      if (!city_id) {
+        return {
+          statusCode: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
+          body: JSON.stringify({ message: "city_id parameter is required" })
+        };
+      }
+
       const cacheKey = `photos:${city_id}:${start_date}:${end_date}`;
 
       const cachedData = await safeRedisGet(cacheKey);
@@ -129,6 +139,18 @@ exports.handler = async (event) => {
     // 📍 Videoları listeleme (GET /videos)
     if (path.endsWith("/videos") && method === "GET") {
       const { city_id, start_date, end_date } = queryParams;
+
+      if (!city_id) {
+        return {
+          statusCode: 400,
+          headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          },
+          body: JSON.stringify({ message: "city_id parameter is required" })
+        };
+      }
+
       const cacheKey = `videos:${city_id}:${start_date}:${end_date}`;
 
       const cachedData = await safeRedisGet(cacheKey);
@@ -147,7 +169,7 @@ exports.handler = async (event) => {
 
       console.log('CACHE MISS:', cacheKey);
       const result = await pool.query(
-        "SELECT * FROM videos WHERE city_id = $1 AND time_range_start >= $2 AND time_range_end <= $3",
+        "SELECT * FROM videos WHERE city_id = $1 AND time_range_start >= $2 AND time_range_end <= $3 ORDER BY created_at DESC",
         [city_id, start_date || '1970-01-01', end_date || new Date().toISOString()]
       );
 

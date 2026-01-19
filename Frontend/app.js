@@ -54,6 +54,7 @@ const webcamsApi = {
 // =========================== STATE ==========================================
 let selectedCity = null;          // { id, name, country } - the city user picked from dropdown
 let weatherData = [];             // Raw weather data from API
+let allVideos = [];               // All videos for the city
 let availableDates = [];          // Unique dates with data
 let availableHoursByDate = {};    // { "2025-12-01": [0, 1, 2, ...] }
 let weatherChart = null;          // Chart.js instance
@@ -70,6 +71,7 @@ const searchInput = document.getElementById("search-input");
 const autocompleteDropdown = document.getElementById("autocomplete-dropdown");
 const searchError = document.getElementById("search-error");
 const loadingOverlay = document.getElementById("loading-overlay");
+const selectionIndicator = document.getElementById("selection-indicator");
 
 // =========================== INITIALIZATION =================================
 document.addEventListener("DOMContentLoaded", () => {
@@ -82,6 +84,9 @@ window.addEventListener("hashchange", handleRouteChange);
 function setupEventListeners() {
     // Autocomplete on input
     searchInput.addEventListener("input", debounce(handleSearchInput, 300));
+
+    // Show all cities on focus (click to browse)
+    searchInput.addEventListener("focus", handleSearchFocus);
 
     // Keyboard navigation
     searchInput.addEventListener("keydown", handleSearchKeydown);
@@ -146,6 +151,7 @@ function showHomeView() {
     selectedCity = null;
     clearError();
     hideAutocomplete();
+    updateSelectionState();
 }
 
 function showTopicView(cityName, cityId) {
@@ -165,15 +171,55 @@ function showUploadView() {
 }
 
 // =========================== AUTOCOMPLETE ===================================
+
+// Update visual feedback based on selection state
+function updateSelectionState() {
+    if (selectedCity) {
+        searchInput.classList.add("selected");
+        searchInput.classList.remove("invalid");
+        if (selectionIndicator) {
+            selectionIndicator.textContent = "✓";
+            selectionIndicator.className = "selection-indicator valid";
+        }
+    } else {
+        searchInput.classList.remove("selected");
+        if (selectionIndicator) {
+            selectionIndicator.textContent = "";
+            selectionIndicator.className = "selection-indicator";
+        }
+    }
+}
+
+// Show dropdown when input is focused (browse all cities)
+async function handleSearchFocus() {
+    // If already has a selection, don't show dropdown
+    if (selectedCity) return;
+
+    const query = searchInput.value.trim();
+
+    try {
+        // Fetch cities (empty query returns all, or filter if user typed something)
+        const cities = await fetchCities(query);
+
+        if (cities.length > 0) {
+            renderAutocomplete(cities, true); // true = show hint
+        }
+    } catch (error) {
+        console.error("Focus autocomplete error:", error);
+    }
+}
+
 async function handleSearchInput(e) {
     const query = searchInput.value.trim();
     clearError();
 
     // Reset selected city when user types
     selectedCity = null;
+    updateSelectionState();
 
     if (query.length < 1) {
-        hideAutocomplete();
+        // Show all cities when input is empty but focused
+        handleSearchFocus();
         return;
     }
 
@@ -181,19 +227,21 @@ async function handleSearchInput(e) {
         const cities = await fetchCities(query);
 
         if (cities.length === 0) {
-            hideAutocomplete();
+            renderNoResults();
             return;
         }
 
-        renderAutocomplete(cities);
+        renderAutocomplete(cities, true);
     } catch (error) {
         console.error("Autocomplete error:", error);
         hideAutocomplete();
     }
 }
 
-function renderAutocomplete(cities) {
-    autocompleteDropdown.innerHTML = cities.map((city, index) => `
+function renderAutocomplete(cities, showHint = false) {
+    const hintHtml = showHint ? `<div class="dropdown-hint">Select a city from the list below</div>` : '';
+
+    autocompleteDropdown.innerHTML = hintHtml + cities.map((city, index) => `
         <div class="autocomplete-item" data-index="${index}" data-id="${city.id}" data-name="${city.name}" data-country="${city.country || ''}">
             <span class="city-name">${city.name}</span>
             <span class="country">${city.country || ''}</span>
@@ -208,6 +256,11 @@ function renderAutocomplete(cities) {
     autocompleteDropdown.classList.add("show");
 }
 
+function renderNoResults() {
+    autocompleteDropdown.innerHTML = `<div class="dropdown-hint">No cities found. Please try a different search.</div>`;
+    autocompleteDropdown.classList.add("show");
+}
+
 function selectCity(element) {
     const city = {
         id: element.dataset.id,
@@ -219,6 +272,7 @@ function selectCity(element) {
     searchInput.value = city.name + (city.country ? `, ${city.country}` : "");
     hideAutocomplete();
     clearError();
+    updateSelectionState();
 }
 
 function hideAutocomplete() {
@@ -266,11 +320,13 @@ function handleSearch() {
 
     if (!inputValue) {
         showError("Please enter a city name to search.");
+        showInvalidState();
         return;
     }
 
     if (!selectedCity) {
-        showError("Please select a city from the dropdown list. Type to search, then click a suggestion.");
+        showError("Please select a city from the dropdown list. Click the input and choose a city.");
+        showInvalidState();
         return;
     }
 
@@ -279,11 +335,31 @@ function handleSearch() {
     if (inputValue !== expectedValue && inputValue !== selectedCity.name) {
         showError("Please select a city from the dropdown list. The entered text doesn't match your selection.");
         selectedCity = null;
+        showInvalidState();
         return;
     }
 
     // Navigate to topic view
     navigateToTopic(selectedCity);
+}
+
+function showInvalidState() {
+    searchInput.classList.add("invalid");
+    searchInput.classList.remove("selected");
+    if (selectionIndicator) {
+        selectionIndicator.textContent = "✗";
+        selectionIndicator.className = "selection-indicator invalid";
+    }
+    // Remove invalid class after animation
+    setTimeout(() => {
+        if (!selectedCity) {
+            searchInput.classList.remove("invalid");
+            if (selectionIndicator) {
+                selectionIndicator.textContent = "";
+                selectionIndicator.className = "selection-indicator";
+            }
+        }
+    }, 500);
 }
 
 function showError(message) {
@@ -297,6 +373,8 @@ function clearError() {
 // =========================== TOPIC VIEW DATA ================================
 async function loadTopicData(cityName, cityId) {
     showLoading();
+    console.log("=== LOAD TOPIC DATA ===");
+    console.log("City:", cityName, "ID:", cityId);
 
     try {
         // Load videos and weather data in parallel
@@ -305,24 +383,32 @@ async function loadTopicData(cityName, cityId) {
             fetchWeather(cityId)
         ]);
 
+        console.log("Videos from API:", videos);
+        console.log("Weather from API:", weather);
+
+        // Save videos globally for date filtering
+        allVideos = videos || [];
+
         // Process weather data
         weatherData = weather;
         processWeatherDates(weather);
 
-        // Load video
-        loadVideo(videos);
+        // Add video dates to available dates
+        addVideoDatesToAvailable(allVideos);
 
         // Populate date picker
         populateDatePicker();
 
-        // Render initial chart
+        // Render initial chart and video for the first available date
         if (availableDates.length > 0) {
             const initialDate = availableDates[0];
             document.getElementById("date-picker").value = initialDate;
             updateHourSlider(initialDate);
             renderWeatherChart(initialDate);
+            loadVideoForDate(initialDate);
         } else {
             document.getElementById("plot-message").textContent = "No weather data available for this city.";
+            loadVideoForDate(null); // Show newest or no video
         }
 
     } catch (error) {
@@ -362,6 +448,26 @@ function processWeatherDates(data) {
     });
 }
 
+function addVideoDatesToAvailable(videos) {
+    if (!videos || videos.length === 0) return;
+
+    videos.forEach(video => {
+        const videoDate = new Date(video.created_at).toISOString().split("T")[0];
+
+        // Add to availableDates if not already present
+        if (!availableDates.includes(videoDate)) {
+            availableDates.push(videoDate);
+            // Initialize empty hours array for video-only dates
+            availableHoursByDate[videoDate] = [];
+        }
+    });
+
+    // Re-sort dates
+    availableDates.sort();
+
+    console.log("Available dates after adding videos:", availableDates);
+}
+
 function populateDatePicker() {
     const datePicker = document.getElementById("date-picker");
 
@@ -388,6 +494,7 @@ function handleDateChange(e) {
     if (selectedDate) {
         updateHourSlider(selectedDate);
         renderWeatherChart(selectedDate);
+        loadVideoForDate(selectedDate);
     }
 }
 
@@ -424,22 +531,48 @@ function handleHourChange(e) {
 }
 
 // =========================== VIDEO LOADING ==================================
-function loadVideo(videos) {
+function loadVideoForDate(selectedDate) {
     const videoElement = document.getElementById("topic-video");
     const videoMessage = document.getElementById("video-message");
 
-    if (!videos || videos.length === 0) {
+    console.log("=== VIDEO DEBUG ===");
+    console.log("Selected date:", selectedDate);
+    console.log("All videos:", allVideos);
+
+    if (!allVideos || allVideos.length === 0) {
         videoElement.style.display = "none";
         videoMessage.textContent = "No video available for this city yet.";
         return;
     }
 
-    // Get the newest video
-    const newestVideo = videos[0]; // Assuming API returns newest first
+    // Find video that matches the selected date
+    let matchingVideo = null;
+
+    if (selectedDate) {
+        matchingVideo = allVideos.find(video => {
+            // Get video's created date in YYYY-MM-DD format
+            const videoCreatedDate = new Date(video.created_at).toISOString().split("T")[0];
+
+            console.log(`Video ID ${video.id}: created_at=${video.created_at}, parsed date=${videoCreatedDate}, match=${videoCreatedDate === selectedDate}`);
+
+            return videoCreatedDate === selectedDate;
+        });
+    }
+
+    console.log("Matching video:", matchingVideo);
+
+    // Fallback to newest video if no match found
+    const videoToShow = matchingVideo || allVideos[0];
 
     videoElement.style.display = "block";
-    videoElement.src = newestVideo.video_url;
-    videoMessage.textContent = `Video from: ${new Date(newestVideo.created_at).toLocaleDateString()}`;
+    videoElement.src = videoToShow.video_url;
+
+    const videoDate = new Date(videoToShow.created_at).toLocaleDateString();
+    if (matchingVideo) {
+        videoMessage.textContent = `Video from: ${videoDate}`;
+    } else {
+        videoMessage.textContent = `No video for selected date. Showing latest: ${videoDate}`;
+    }
 }
 
 // =========================== WEATHER CHART ==================================
